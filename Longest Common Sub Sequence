@@ -1,0 +1,46 @@
+import java.util.*;
+class LCS {
+    public static void main(String args[]) {
+        Scanner in = new Scanner(System.in);
+        String s1, s2;
+        int i, j;
+        System.out.println("Enter string 1:");
+        s1 = in.nextLine();
+        System.out.println("Enter string 2:");
+        s2 = in.nextLine();
+        int n1, n2;
+        n1 = s1.length();
+        n2 = s2.length();
+        int arr[][] = new int[n1 + 1][n2 + 1]; 
+        for (i = 0; i <= n1; i++) {
+            for (j = 0; j <= n2; j++) {
+                if (i == 0 || j == 0)
+                    arr[i][j] = 0;
+                else if (s1.charAt(i - 1) == s2.charAt(j - 1))
+                    arr[i][j] = arr[i - 1][j - 1] + 1;
+                else
+                    arr[i][j] = Math.max(arr[i - 1][j], arr[i][j - 1]);
+            }
+        }
+        int index = arr[n1][n2];
+        int temp = index;
+        char[] longestCommonSubsequence = new char[index];
+        int p = n1, q = n2;
+        while (p > 0 && q > 0) {
+            if (s1.charAt(p - 1) == s2.charAt(q - 1)) {
+                longestCommonSubsequence[index - 1] = s1.charAt(p - 1);
+                p--;
+                q--;
+                index--;
+            } else if (arr[p - 1][q] > arr[p][q - 1])
+                p--;
+            else
+                q--;
+        }
+        String lcs = new String(longestCommonSubsequence);
+
+        System.out.println("Sequence1: " + s1 + "\nSequence2: " + s2);
+        System.out.println("LCS: " + lcs);
+        System.out.println("Length of Longest common subsequence:"+lcs.length)
+    }
+}
